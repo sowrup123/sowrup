@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>For You 💗</title>
+
+
+
+<style>
+
+  *{box-sizing:border-box;}
+
+  body{
+
+    margin:0;
+
+    height:100vh;
+
+    overflow:hidden;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-family: "Poppins", system-ui, -apple-system, Arial, sans-serif;
+
+    background: radial-gradient(circle at top, #ffe0ec 0%, #ffb6c1 45%, #ffc8dd 100%);
+
+    color:#5a1230;
+
+  }
+
+
+
+  /* soft moving glow */
+
+  .glow{
+
+    position:absolute;
+
+    inset:-40%;
+
+    background:
+
+      radial-gradient(circle at 20% 20%, rgba(255,255,255,0.55), transparent 40%),
+
+      radial-gradient(circle at 80% 30%, rgba(255,255,255,0.35), transparent 45%),
+
+      radial-gradient(circle at 50% 80%, rgba(255,255,255,0.25), transparent 45%);
+
+    animation: drift 10s ease-in-out infinite alternate;
+
+    filter: blur(20px);
+
+    opacity:0.9;
+
+    z-index:0;
+
+  }
+
+
+
+  @keyframes drift{
+
+    from{transform:translate(-2%, -2%) scale(1.02);}
+
+    to{transform:translate(2%, 2%) scale(1.06);}
+
+  }
+
+
+
+  /* stage container */
+
+  .stage{
+
+    position:relative;
+
+    z-index:2;
+
+    width:min(92vw, 520px);
+
+    padding:22px;
+
+  }
+
+
+
+  .card{
+
+    background: rgba(255,255,255,0.35);
+
+    border: 1px solid rgba(255,255,255,0.35);
+
+    border-radius: 26px;
+
+    padding: 26px 22px;
+
+    box-shadow: 0 18px 45px rgba(0,0,0,0.18);
+
+    backdrop-filter: blur(10px);
+
+    text-align:center;
+
+    transform: translateY(10px);
+
+    opacity:0;
+
+    animation: cardIn 1.2s ease forwards;
+
+    animation-delay: 2.4s; /* after bouquet leaves */
+
+  }
+
+
+
+  @keyframes cardIn{
+
+    from{opacity:0; transform: translateY(18px) scale(0.98);}
+
+    to{opacity:1; transform: translateY(0) scale(1);}
+
+  }
+
+
+
+  .title{
+
+    font-size: 28px;
+
+    margin: 0 0 10px;
+
+    color:#ff2f6d;
+
+    letter-spacing:0.5px;
+
+  }
+
+
+
+  .subtitle{
+
+    margin:0 0 14px;
+
+    font-size: 15px;
+
+    opacity:0.85;
+
+  }
+
+
+
+  /* Bouquet burst scene */
+
+  .bouquetScene{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:3;
+
+    pointer-events:none;
+
+  }
+
+
+
+  .bouquetWrap{
+
+    width: 240px;
+
+    height: 240px;
+
+    position:relative;
+
+    transform: scale(0.25);
+
+    opacity:0;
+
+    animation: burstIn 0.35s ease forwards,
+
+               stay 0.9s ease forwards 0.35s,
+
+               floatAway 1.1s ease forwards 1.25s;
+
+  }
+
+
+
+  /* burst pop */
+
+  @keyframes burstIn{
+
+    from{transform:scale(0.2); opacity:0;}
+
+    to{transform:scale(1.05); opacity:1;}
+
+  }
+
+
+
+  /* tiny pause */
+
+  @keyframes stay{
+
+    from{transform:scale(1.05);}
+
+    to{transform:scale(1);}
+
+  }
+
+
+
+  /* leave animation */
+
+  @keyframes floatAway{
+
+    0%{transform:scale(1) translateY(0); opacity:1;}
+
+    100%{transform:scale(0.9) translateY(-120px); opacity:0;}
+
+  }
+
+
+
+  .flower{
+
+    width: 58px;
+
+    height: 58px;
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter: drop-shadow(0 8px 14px rgba(0,0,0,0.18));
+
+    animation: bloom 0.9s ease forwards;
+
+    opacity:0;
+
+  }
+
+
+
+  @keyframes bloom{
+
+    0%{transform:scale(0) rotate(0deg); opacity:0;}
+
+    60%{transform:scale(1.25) rotate(140deg); opacity:1;}
+
+    100%{transform:scale(1) rotate(320deg); opacity:1;}
+
+  }
+
+
+
+  /* petals look */
+
+  .flower::before, .flower::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:10px;
+
+    border-radius:50%;
+
+    background: rgba(255,255,255,0.25);
+
+    filter: blur(0.5px);
+
+  }
+
+
+
+  .centerDot{
+
+    position:absolute;
+
+    width:16px; height:16px;
+
+    background: #ffe066;
+
+    border-radius:50%;
+
+    top: 50%; left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    box-shadow: 0 0 0 6px rgba(255,224,102,0.25);
+
+  }
+
+
+
+  .f1{background:#ff2f6d; top:38px; left:88px; animation-delay:0.05s;}
+
+  .f2{background:#ff85a1; top:70px; left:30px; animation-delay:0.15s;}
+
+  .f3{background:#ff85a1; top:70px; left:145px; animation-delay:0.25s;}
+
+  .f4{background:#ff4d6d; top:118px; left:62px; animation-delay:0.35s;}
+
+  .f5{background:#ffb3c6; top:118px; left:114px; animation-delay:0.45s;}
+
+  .f6{background:#ff5c8a; top:105px; left:95px; animation-delay:0.55s;}
+
+
+
+  /* sparkle dots */
+
+  .sparkle{
+
+    position:absolute;
+
+    width:6px; height:6px;
+
+    border-radius:50%;
+
+    background: rgba(255,255,255,0.95);
+
+    box-shadow: 0 0 18px rgba(255,255,255,0.9);
+
+    animation: sparkle 1.2s ease-in-out infinite;
+
+    opacity:0.9;
+
+  }
+
+
+
+  @keyframes sparkle{
+
+    0%,100%{transform:scale(0.7); opacity:0.6;}
+
+    50%{transform:scale(1.3); opacity:1;}
+
+  }
+
+
+
+  /* typewriter letter */
+
+  .letter{
+
+    text-align:left;
+
+    margin-top: 10px;
+
+    background: rgba(255,255,255,0.40);
+
+    border-radius: 18px;
+
+    padding: 16px 16px;
+
+    border: 1px solid rgba(255,255,255,0.35);
+
+  }
+
+
+
+  .type{
+
+    font-size: 16px;
+
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+
+    min-height: 150px;
+
+  }
+
+
+
+  .signature{
+
+    margin-top: 12px;
+
+    font-weight:700;
+
+    color:#ff2f6d;
+
+    opacity:0;
+
+    transform: translateY(6px);
+
+    animation: sigIn 0.8s ease forwards;
+
+    animation-delay: 6.2s;
+
+  }
+
+
+
+  @keyframes sigIn{
+
+    to{opacity:1; transform: translateY(0);}
+
+  }
+
+
+
+  /* floating hearts background */
+
+  .heart{
+
+    position:absolute;
+
+    width:18px;
+
+    height:18px;
+
+    background:#ff2f6d;
+
+    transform: rotate(45deg);
+
+    opacity:0.55;
+
+    animation: float 6s linear infinite;
+
+    z-index:1;
+
+  }
+
+  .heart::before,.heart::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:18px;
+
+    height:18px;
+
+    background:#ff2f6d;
+
+    border-radius:50%;
+
+  }
+
+  .heart::before{top:-9px; left:0;}
+
+  .heart::after{left:-9px; top:0;}
+
+
+
+  @keyframes float{
+
+    0%{transform:translateY(20px) rotate(45deg); opacity:0;}
+
+    20%{opacity:0.65;}
+
+    100%{transform:translateY(-110vh) rotate(45deg); opacity:0;}
+
+  }
+
+
+
+  /* small button style */
+
+  .btnRow{
+
+    margin-top:14px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+  }
+
+  .btn{
+
+    border:none;
+
+    border-radius: 999px;
+
+    padding: 10px 14px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    background: rgba(255,47,109,0.12);
+
+    color:#ff2f6d;
+
+    border: 1px solid rgba(255,47,109,0.22);
+
+    transition: transform 0.15s ease;
+
+  }
+
+  .btn:active{transform:scale(0.98);}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+  <div class="glow"></div>
+
+
+
+  <!-- Bouquet flash scene -->
+
+  <div class="bouquetScene">
+
+    <div class="bouquetWrap" id="bouquet">
+
+      <div class="flower f1"><div class="centerDot"></div></div>
+
+      <div class="flower f2"><div class="centerDot"></div></div>
+
+      <div class="flower f3"><div class="centerDot"></div></div>
+
+      <div class="flower f4"><div class="centerDot"></div></div>
+
+      <div class="flower f5"><div class="centerDot"></div></div>
+
+      <div class="flower f6"><div class="centerDot"></div></div>
+
+
+
+      <div class="sparkle" style="top:25px; left:40px;"></div>
+
+      <div class="sparkle" style="top:40px; right:35px; animation-delay:0.3s;"></div>
+
+      <div class="sparkle" style="bottom:60px; left:25px; animation-delay:0.6s;"></div>
+
+      <div class="sparkle" style="bottom:45px; right:28px; animation-delay:0.9s;"></div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Love letter card -->
+
+  <div class="stage">
+
+    <div class="card">
+
+      <h1 class="title">💌 A Love Letter For You</h1>
+
+      <p class="subtitle">I wanted to say this… in the cutest way possible 🥺💗</p>
+
+
+
+      <div class="letter">
+
+        <div class="type" id="typeBox"></div>
+
+        <div class="signature" id="sig">— Yours, always 💖</div>
+
+      </div>
+
+
+
+      <div class="btnRow">
+
+        <button class="btn" onclick="restart()">Replay 💞</button>
+
+        <button class="btn" onclick="moreHearts()">More Love ✨</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+<script>
+
+  // 💌 CUSTOMIZE THESE (change names/message here)
+
+  const herName = "My Love";
+
+  const yourName = "Someone who loves you";
+
+
+
+  const letterText =
+
+`Hey ${herName} 💗
+
+
+
+I don’t even know where to start…
+
+Because every time I think about you,
+
+my heart becomes soft, quiet, and happy.
+
+
+
+You are not just someone I like…
+
+You feel like my favorite place.
+
+The kind of person that makes ordinary moments feel special.
+
+
+
+I love the way you exist…
+
+your smile, your vibe, your energy,
+
+and how you stay in my mind even when you’re not around.
+
+
+
+If love had a sound,
+
+it would be the peace I feel when I think of you.
+
+
+
+So today I just wanted to confess:
+
+I love you… deeply, truly, and endlessly.
+
+And I’ll keep choosing you —
+
+again and again, every single day. 💐💞
+
+
+
+Always yours,
+
+Created by : Sowrup sharma paudel
+
+${yourName}`;
+
+
+
+  // Typewriter effect
+
+  const typeBox = document.getElementById("typeBox");
+
+  let i = 0;
+
+  let typingTimer;
+
+
+
+  function typeWriter(){
+
+    typeBox.textContent = "";
+
+    i = 0;
+
+    clearInterval(typingTimer);
+
+
+
+    // delay so bouquet finishes leaving first
+
+    setTimeout(()=>{
+
+      typingTimer = setInterval(()=>{
+
+        typeBox.textContent += letterText.charAt(i);
+
+        i++;
+
+        if(i >= letterText.length){
+
+          clearInterval(typingTimer);
+
+        }
+
+      }, 28);
+
+    }, 2600);
+
+  }
+
+
+
+  // floating hearts
+
+  function createHeart(){
+
+    const heart = document.createElement("div");
+
+    heart.className = "heart";
+
+    heart.style.left = Math.random() * 100 + "vw";
+
+    heart.style.animationDuration = (4 + Math.random()*3) + "s";
+
+    heart.style.transform = "rotate(45deg) scale(" + (0.7 + Math.random()*1.1) + ")";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(), 7000);
+
+  }
+
+
+
+  let heartInterval = setInterval(createHeart, 420);
+
+
+
+  function moreHearts(){
+
+    for(let k=0;k<18;k++){
+
+      setTimeout(createHeart, k*70);
+
+    }
+
+  }
+
+
+
+  // Replay animation
+
+  function restart(){
+
+    // reset bouquet animation by cloning
+
+    const old = document.getElementById("bouquet");
+
+    const clone = old.cloneNode(true);
+
+    old.parentNode.replaceChild(clone, old);
+
+
+
+    // restart typewriter
+
+    typeWriter();
+
+
+
+    // extra hearts burst
+
+    moreHearts();
+
+  }
+
+
+
+  // start automatically
+
+  typeWriter();
+
+</script>
+
+
+
+</body>
+
+</html>
