@@ -65,7 +65,7 @@
       transform: translateY(10px);
       opacity: 0;
       animation: cardIn 1.2s ease forwards;
-      animation-delay: 2.2s; /* Waits for bouquet entrance */
+      animation-delay: 2.2s;
     }
 
     @keyframes cardIn {
@@ -345,14 +345,12 @@ Having you in my life makes every single day brighter, warmer, and so much sweet
       i = 0;
       clearInterval(typingTimer);
 
-      // Start typing after bouquet animation floats away
       setTimeout(() => {
         typingTimer = setInterval(() => {
           typeBox.textContent += letterText.charAt(i);
           i++;
           if (i >= letterText.length) {
             clearInterval(typingTimer);
-            // Show signature smoothly after typing ends
             setTimeout(() => {
               sig.classList.add("show");
             }, 300);
@@ -388,7 +386,6 @@ Having you in my life makes every single day brighter, warmer, and so much sweet
       moreHearts();
     }
 
-    // Auto-start on load
     typeWriter();
   </script>
 </body>
